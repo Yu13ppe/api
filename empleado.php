@@ -36,21 +36,22 @@ switch ($method) {
             apellido, 
             cedula, 
             telefono, 
-            direccion, 
+            direccion
+            ) 
             VALUES(
             null, 
             :nombre, 
             :apellido, 
             :cedula, 
             :telefono, 
-            :direccion, 
+            :direccion 
             )";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':nombre', $empleado->nombre);
         $stmt->bindParam(':apellido', $empleado->apellido);
         $stmt->bindParam(':cedula', $empleado->cedula);
-        $stmt->bindParam(':telefono', $telefono);
-        $stmt->bindParam(':direccion', $direccion);
+        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':direccion', $empleado->direccion);
 
         if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record created successfully.'];
@@ -63,18 +64,19 @@ switch ($method) {
     case "PUT":
         $empleado = json_decode(file_get_contents('php://input'));
         $sql = "UPDATE empleados SET 
-        nombre= :nombre, 
-        apellido =:apellido, 
-        cedula =:cedula, 
-        telefono= :telefono, 
-        direccion= :direccion, 
-        WHERE id = :id";
+                    nombre= :nombre, 
+                    apellido =:apellido, 
+                    cedula =:cedula, 
+                    telefono= :telefono, 
+                    direccion= :direccion 
+                    WHERE id = :id";
+                    
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':nombre', $empleado->nombre);
         $stmt->bindParam(':apellido', $empleado->apellido);
         $stmt->bindParam(':cedula', $empleado->cedula);
-        $stmt->bindParam(':telefono', $telefono);
-        $stmt->bindParam(':direccion', $direccion);
+        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':direccion', $empleado->direccion);
 
         if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record updated successfully.'];

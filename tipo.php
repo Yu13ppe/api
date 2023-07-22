@@ -32,10 +32,11 @@ switch ($method) {
         $tipo = json_decode(file_get_contents('php://input'));
         $sql = "INSERT INTO tipos_productos(
             id, 
-            tipo, 
+            tipo
+            ) 
             VALUES(
             null, 
-            :tipo, 
+            :tipo 
             )";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':tipo', $tipo->tipo);
@@ -51,7 +52,7 @@ switch ($method) {
     case "PUT":
         $tipo = json_decode(file_get_contents('php://input'));
         $sql = "UPDATE tipos_productos SET 
-        tipo= :tipo, 
+        tipo= :tipo 
         WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':tipo', $tipo->tipo);

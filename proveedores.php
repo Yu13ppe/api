@@ -35,19 +35,20 @@ switch ($method) {
             nombre, 
             rif, 
             telefono, 
-            correo, 
+            correo
+            ) 
             VALUES(
             null, 
             :nombre, 
             :rif, 
             :telefono, 
-            :correo, 
+            :correo 
             )";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':nombre', $empleado->nombre);
         $stmt->bindParam(':rif', $empleado->rif);
-        $stmt->bindParam(':telefono', $telefono);
-        $stmt->bindParam(':correo', $correo);
+        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':correo', $empleado->correo);
 
         if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record created successfully.'];
@@ -63,13 +64,13 @@ switch ($method) {
         nombre= :nombre, 
         rif =:rif, 
         telefono= :telefono, 
-        correo= :correo, 
+        correo= :correo 
         WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':nombre', $empleado->nombre);
         $stmt->bindParam(':rif', $empleado->rif);
-        $stmt->bindParam(':telefono', $telefono);
-        $stmt->bindParam(':correo', $correo);
+        $stmt->bindParam(':telefono', $empleado->telefono);
+        $stmt->bindParam(':correo', $empleado->correo);
 
         if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record updated successfully.'];

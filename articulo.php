@@ -51,9 +51,9 @@ switch ($method) {
         $stmt->bindParam(':nombre', $articulo->nombre);
         $stmt->bindParam(':id_tipo', $articulo->id_tipo);
         $stmt->bindParam(':cantidad', $articulo->cantidad);
-        $stmt->bindParam(':fecha_vencimiento', $fecha_vencimiento);
-        $stmt->bindParam(':imagen', $imagen);
-        $stmt->bindParam(':id_farmaceuta', $id_farmaceuta);
+        $stmt->bindParam(':fecha_vencimiento', $articulo->fecha_vencimiento);
+        $stmt->bindParam(':imagen', $articulo->imagen);
+        $stmt->bindParam(':id_farmaceuta', $articulo->id_farmaceuta);
 
         if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record created successfully.'];
@@ -64,22 +64,25 @@ switch ($method) {
         break;
 
     case "PUT":
-        $articulo = json_decode(file_get_contents('php://input'));
+        $data = json_decode(file_get_contents('php://input'), true);
+
         $sql = "UPDATE articulos SET 
-        nombre= :nombre, 
-        id_tipo =:id_tipo, 
-        cantidad =:cantidad, 
-        fecha_vencimiento= :fecha_vencimiento, 
-        imagen= :imagen, 
-        id_farmaceuta= :id_farmaceuta 
-        WHERE id = :id";
+                    nombre = :nombre, 
+                    id_tipo = :id_tipo, 
+                    cantidad = :cantidad, 
+                    fecha_vencimiento = :fecha_vencimiento, 
+                    imagen = :imagen, 
+                    id_farmaceuta = :id_farmaceuta 
+                    WHERE id = :id";
+
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':nombre', $articulo->nombre);
-        $stmt->bindParam(':id_tipo', $articulo->id_tipo);
-        $stmt->bindParam(':cantidad', $articulo->cantidad);
-        $stmt->bindParam(':fecha_vencimiento', $fecha_vencimiento);
-        $stmt->bindParam(':imagen', $imagen);
-        $stmt->bindParam(':id_farmaceuta', $id_farmaceuta);
+        $stmt->bindParam(':nombre', $data['nombre']);
+        $stmt->bindParam(':id_tipo', $data['id_tipo']);
+        $stmt->bindParam(':cantidad', $data['cantidad']);
+        $stmt->bindParam(':fecha_vencimiento', $data['fecha_vencimiento']);
+        $stmt->bindParam(':imagen', $data['imagen']);
+        $stmt->bindParam(':id_farmaceuta', $data['id_farmaceuta']);
+        $stmt->bindParam(':id', $data['id']); // Asegúrate de que el ID esté incluido en los datos enviados desde React.
 
         if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record updated successfully.'];
@@ -90,11 +93,12 @@ switch ($method) {
         break;
 
     case "DELETE":
+        $data = json_decode(file_get_contents('php://input'), true);
+        $id = $data['id'];
         $sql = "DELETE FROM articulos WHERE id = :id";
-        $path = explode('/', $_SERVER['REQUEST_URI']);
 
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $path[3]);
+        $stmt->bindParam(':id', $id);
 
         if ($stmt->execute()) {
             $response = ['status' => 1, 'message' => 'Record deleted successfully.'];

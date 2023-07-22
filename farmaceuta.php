@@ -32,7 +32,8 @@ switch ($method) {
         $farmaceuta = json_decode(file_get_contents('php://input'));
         $sql = "INSERT INTO farmaceuta(
             id, 
-            nombre, 
+            nombre
+            ) 
             VALUES(
             null, 
             :nombre, 
@@ -51,7 +52,7 @@ switch ($method) {
     case "PUT":
         $farmaceuta = json_decode(file_get_contents('php://input'));
         $sql = "UPDATE farmaceuta SET 
-        nombre= :nombre, 
+        nombre= :nombre 
         WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':nombre', $farmaceuta->nombre);
